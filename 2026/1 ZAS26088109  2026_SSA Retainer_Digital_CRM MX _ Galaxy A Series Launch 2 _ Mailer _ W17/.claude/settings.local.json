@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pandoc links.docx -t plain)",
+      "Bash(python \"/c/Users/user/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/7e32289b-9502-4d49-adb4-8e130bb45727/f0b0a3e5-b3f1-4c39-baf1-db23ba02fc2f/skills/docx/scripts/office/unpack.py\" links.docx links_unpacked/)",
+      "Bash(python -c ' *)",
+      "Read(//c/Users/user/Claude/Mailers/2026/**)",
+      "Bash(python \"C:/Users/user/Claude/Mailers/gen_regional.py\")",
+      "Bash(python gen_regional.py)"
+    ]
+  }
+}

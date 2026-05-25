@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+PRODID:-//Chilli Creative//Samsung Galaxy Unpacked//EN
+BEGIN:VEVENT
+UID:849ff222-4e25-4825-b50d-18c900156a20@samsung.com
+DTSTAMP:20260128T125805Z
+DTSTART:20260225T180000Z
+DTEND:20260225T190000Z
+SUMMARY:Samsung prochain Galaxy Unpacked
+DESCRIPTION:Regardez l'événement en direct sur https://www.samsung.com/af
+ rica_fr
+URL:https://www.samsung.com/africa_fr
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

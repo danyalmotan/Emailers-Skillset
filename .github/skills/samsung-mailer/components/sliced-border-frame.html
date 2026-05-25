@@ -1,0 +1,88 @@
+<!-- COMPONENT: sliced-border-frame | Source: ZAS26088065 Miracle Launch 2 SA (lines 87–138), ZAS26088075 S26 Brandstores (lines 38–104) | Usage: Decorative frame technique — top corner strip + white inner content area + bottom corner strip, all inside a campaign-colour background table -->
+
+<!-- ============================================================
+     HOW IT WORKS:
+     - Outer table: campaign background colour (e.g. #8D91B9)
+     - Inner table: 520px wide
+     - Row 1: rgtfdss-0001.png = top-left + top-right corner decorations (16px tall)
+     - Rows 2–N: background-color:#fff = white inner content area
+     - Last row: rgtfdss-0002.png = bottom-left + bottom-right corner decorations (16px tall)
+     - The corner images create the illusion of a rounded/decorated frame border
+     ============================================================ -->
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" style="background:[CAMPAIGN_BG_COLOUR e.g. #8D91B9];" width="600">
+    <tbody>
+        <tr>
+            <td style="text-align: center;">
+                <table align="center" border="0" cellpadding="0" cellspacing="0" height="[TOTAL_INNER_HEIGHT e.g. 656]" width="520">
+                    <tbody>
+                        <!-- TOP CORNER STRIP -->
+                        <tr>
+                            <td align="center" style="vertical-align: bottom;"><img alt="" height="16" src="https://cdn19.mailercdn.net/users/assets/379/images/rgtfdss-0001.png" style="width: 520px; height: 16px; display:block; margin:auto;" width="520"></td>
+                        </tr>
+
+                        <!-- INNER CONTENT ROWS (white background) -->
+                        <!-- Spacer -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;">&nbsp; &nbsp;<br>
+                                &nbsp; &nbsp;<br>
+                                &nbsp; &nbsp;&nbsp;</td>
+                        </tr>
+                        <!-- Headline -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;"><span style="color:#000000;"><span style="font-size:48px;"><strong><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif;">[INNER_HEADLINE e.g. Pre-order now]</span></strong></span></span></td>
+                        </tr>
+                        <!-- Spacer -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;">&nbsp; &nbsp; &nbsp;&nbsp;</td>
+                        </tr>
+                        <!-- Product image -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;">&nbsp; &nbsp;<br>
+                                &nbsp;&nbsp;<img alt="[PRODUCT_IMAGE_ALT]" height="[PRODUCT_IMAGE_HEIGHT e.g. 154]" src="[PRODUCT_IMAGE_URL]" style="width: [PRODUCT_IMAGE_WIDTH e.g. 150]px; height: [PRODUCT_IMAGE_HEIGHT e.g. 154]px; display: block; margin: auto;" width="[PRODUCT_IMAGE_WIDTH e.g. 150]"></td>
+                        </tr>
+                        <!-- Spacer -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;">&nbsp; &nbsp;</td>
+                        </tr>
+                        <!-- Offer body copy -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;"><span style="color:#000000;"><span style="font-size:24px;"><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif;"><strong>[OFFER_BOLD_LINE e.g. Get double storage on us]</strong><br>
+                                [OFFER_BODY_LINE e.g. Get 512GB for the price of 256GB*]</span></span></span></td>
+                        </tr>
+                        <!-- Validity date -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;"><span style="color:#696969;"><span style="font-size:10px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif;">[OFFER_VALIDITY e.g. Offer valid from 25 February - 19 March 2026]</span></span></span></td>
+                        </tr>
+                        <!-- Spacer -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;">&nbsp;&nbsp;<br>
+                                &nbsp;&nbsp;</td>
+                        </tr>
+                        <!-- CTA button -->
+                        <tr>
+                            <td align="center" style="background-color: #fff;"><a href="[CTA_URL]" target="_blank"><img alt="[CTA_BUTTON_ALT e.g. Shop now]" height="50" src="[CTA_BUTTON_IMAGE_URL]" style="width: [CTA_WIDTH e.g. 138]px; height: 50px; display: block; margin: auto;" width="[CTA_WIDTH e.g. 138]"></a></td>
+                        </tr>
+                        <!-- Spacer -->
+                        <tr>
+                            <td style="background-color: #fff;"><br>
+                                &nbsp; &nbsp;</td>
+                        </tr>
+
+                        <!-- BOTTOM CORNER STRIP -->
+                        <tr style="display:block;">
+                            <td style=""><img alt="" height="16" src="https://cdn19.mailercdn.net/users/assets/379/images/rgtfdss-0002.png" style="width: 520px; height: 16px; display:block; margin:auto;" width="520"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <!-- Bottom breathing room -->
+        <tr>
+            <td style="text-align: center;"><br>
+                <br>
+                &nbsp;&nbsp;</td>
+        </tr>
+    </tbody>
+</table>
