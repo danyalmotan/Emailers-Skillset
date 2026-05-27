@@ -469,23 +469,38 @@ When Danny works in Everlytic's WYSIWYG editor, he uploads images there and they
 
 ### Output folder structure
 
-The HTML file lives in the **same folder as the job's design PNG/JPG**. All cut-up images used in the HTML must be copied **flat** (no subfolders) into **that same folder**. Danny can then zip the folder and import it into Everlytic — the zip contains only the images that are actually needed.
+**Always create a folder called `Published/` inside the job folder.** Do not place generated deliverables loose beside the design PNG/JPG.
+
+Inside `Published/`, always create:
+- **A folder for each design file / generated mailer**
+- **All HTML files only** at the root of `Published/`
+
+**Per-mailer folder rule:** each mailer folder inside `Published/` must contain:
+- the created HTML for that mailer
+- all cut-up images actually used by that HTML, copied **flat** (no subfolders)
+- one matching `.zip` containing that mailer's HTML + images only
+
+**HTML-only root copy rule:** the root of `Published/` must also contain the standalone `.html` file for each generated mailer. These root-level HTML files do **not** have images copied beside them - they are the files Danny updates later with the Everlytic CDN image references.
 
 **You must create that zip file yourself once the folder is complete.** Do not leave zipping as a manual follow-up step.
 
-**Zip naming rule:** the zip filename must match the HTML filename exactly, but without the `.html` extension.
+**Zip naming rule:** inside each mailer folder, the zip filename must match that mailer's HTML filename exactly, but without the `.html` extension.
 
 Example:
-- Folder: `ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1/`
-- HTML: `ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1.html`
-- ZIP: `ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1.zip`
+- Job folder: `ZAS26088113  S26 Series Onboarding_Mailers_W19/`
+- Published folder: `ZAS26088113  S26 Series Onboarding_Mailers_W19/Published/`
+- HTML-only root copy: `Published/ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1.html`
+- Mailer folder: `Published/ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1/`
+- Folder HTML: `Published/ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1/ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1.html`
+- ZIP: `Published/ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1/ZAS26088113  S26 Series Onboarding_Mailers_W19_SA 1.zip`
 
-**Zip contents rule:** zip the **files inside the folder** (HTML + images), not the outer folder wrapper itself.
+**Zip contents rule:** zip the **files inside the mailer folder** (HTML + images), not the outer folder wrapper itself.
 
 **Important zip rules:**
 - Exclude any existing `.zip` file when building or rebuilding the archive
-- Save the finished `.zip` file inside that same completed output folder
-- If a `published/` folder contains multiple mailer folders, create **one zip per mailer folder**
+- Save the finished `.zip` file inside that same completed mailer folder
+- If a `Published/` folder contains multiple mailer folders, create **one zip per mailer folder**
+- If a `Published/` folder contains one or more mailers, also create the matching **HTML-only root copy** for each mailer at the root of `Published/`
 
 ### Use A Server Reference Table File
 
@@ -496,18 +511,19 @@ This is an **additional packaging step** on top of the normal mailer folders and
 #### When to use it
 
 Use it when:
-- There are multiple mailers in one `published/` batch
+- There are multiple mailers in one `Published/` batch
 - Many of those mailers reuse the same hero, button, pod, or section images
 - Uploading each mailer zip separately would create unnecessary duplication on the Everlytic server
 
 #### Required workflow
 
 1. Build **every mailer folder normally**:
-    - one folder per mailer
-    - one HTML file inside that folder
+    - one folder per mailer inside `Published/`
+    - one HTML file inside that folder with local image references
     - only the images actually used by that HTML
     - one matching zip per mailer folder
-2. Then create an additional folder inside `published/` called:
+    - one matching HTML-only copy of that mailer at the root of `Published/`
+2. Then create an additional folder inside `Published/` called:
     - `ALL_IMAGES/`
 3. Copy **one deduplicated copy** of every unique image used across the newly-created mailer folders into `ALL_IMAGES/`
 4. Create **one HTML file** inside `ALL_IMAGES/` called:
@@ -534,17 +550,24 @@ This lets Danny upload **one shared image bundle** to Everlytic, get the CDN URL
 
 ```
 ZAS26088076  [job name]/
-├── ZAS26088076  [job name].png    ← original design file
-├── ZAS26088076  [job name].html   ← HTML output (named same as PNG, .html extension)
-├── Group_2619.png                 ← cut-up images copied flat here, filenames sanitized
-├── Group_2620_2x.png
-├── Image_558_2x.png
-└── ...
+├── ZAS26088076  [job name].png              ← original design file
+└── Published/
+    ├── ZAS26088076  [job name].html         ← HTML-only root copy Danny updates with CDN refs
+    └── ZAS26088076  [job name]/
+        ├── ZAS26088076  [job name].html     ← local image-linked output
+        ├── Group_2619.png                   ← cut-up images copied flat here, filenames sanitized
+        ├── Group_2620_2x.png
+        ├── Image_558_2x.png
+        ├── ...
+        └── ZAS26088076  [job name].zip
 ```
 
 **Critical rules:**
-- **HTML file name** must match the design PNG/JPG filename exactly, just changing the extension to `.html`
-- **Copy only the images that are actually referenced in the HTML** from the cut-up subfolders into the same folder. Do NOT copy unused images.
+- **Always create `Published/`** before generating deliverables
+- **Each generated mailer must exist twice**: once as an HTML-only file at the root of `Published/`, and once inside its own `Published/[mailer name]/` folder together with its images and zip
+- **HTML file name** must match the design PNG/JPG filename exactly, just changing the extension to `.html`, unless Danny explicitly wants a different deliverable basename
+- **Copy only the images that are actually referenced in the folder HTML** from the cut-up subfolders into that mailer folder. Do NOT copy unused images.
+- **Do not copy images next to the HTML-only root copies** in `Published/`
 - If cut-ups are in subfolders (e.g. `ZAS######_images/Icon1/Group 2623@2x.png`), copy them flat — no subfolder prefix in the destination.
 
 ### Filename sanitization (MANDATORY)
@@ -578,7 +601,7 @@ Then in HTML:
 - **All image `src` attributes use just the sanitized filename** — no folder prefix, no CDN URL
 - **For shared images** (e.g. `ZAS######_Miracle_Launch2_KE-TZ.png`), create region-specific copies: `ZAS######_Miracle_Launch2_KE.png` and `ZAS######_Miracle_Launch2_TZ.png`, then create matching HTML files: `ZAS######_Miracle_Launch2_KE.html` and `ZAS######_Miracle_Launch2_TZ.html`
 
-This way Danny can import the folder or its matching zip straight into Everlytic with only the relevant images.
+This way Danny can import the mailer folder or its matching zip straight into Everlytic with only the relevant images, while keeping the standalone `Published/` HTML copy ready for CDN URL replacement.
 
 ### Image rules
 
