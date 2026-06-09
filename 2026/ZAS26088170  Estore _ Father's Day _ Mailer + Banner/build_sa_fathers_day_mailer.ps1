@@ -70,7 +70,7 @@ function Render-WidePriceRows {
 
 @"
                                                                                 <tr>
-                                                                                    <td style="background-color:#FFFFFF; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:20px;$borderStyle"><span style="font-size:14px;"><span style="color:#000000;">$($row.Label)&nbsp;</span></span><span style="font-size:24px;"><span style="color:#000000;"><strong>&nbsp;$($row.Value)</strong></span></span></td>
+                                                                                    <td align="center" style="background-color:#FFFFFF; text-align:center; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:20px;$borderStyle"><span style="font-size:14px;"><span style="color:#000000;">$($row.Label)&nbsp;</span></span><span style="font-size:24px;"><span style="color:#000000;"><strong>&nbsp;$($row.Value)</strong></span></span></td>
                                                                                 </tr>
 "@
     }
@@ -303,11 +303,11 @@ function Render-WideProductSection {
 $PromoHtml
                                 <tr>
                                     <td align="center" valign="top">
-                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:586px;" width="586">
+                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:586px; background-color:#FFFFFF;" width="586">
                                             <tbody>
                                                 <tr>
                                                     <td style="width:43px;"></td>
-                                                    <td style="width:250px; background-color:$BackgroundColor;" width="250">
+                                                    <td style="width:250px; background-color:#FFFFFF;" width="250">
                                                         <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%;" width="100%">
                                                             <tbody>
                                                                 <tr>
@@ -322,7 +322,7 @@ $PromoHtml
                                                             </tbody>
                                                         </table>
                                                     </td>
-                                                    <td style="width:250px; background-color:$BackgroundColor;" width="250">
+                                                    <td style="width:250px; background-color:#FFFFFF;" width="250">
                                                         <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%;" width="100%">
                                                             <tbody>
                                                                 <tr>
@@ -333,7 +333,7 @@ $PromoHtml
                                                                         <table align="center" border="0" cellpadding="5" cellspacing="0" style="border-collapse:collapse; border:1px solid #000000; width:220px;" width="220">
                                                                             <tbody>
                                                                                 <tr>
-                                                                                    <td style="background-color:#000000; vertical-align:top; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#FFFFFF; font-size:20px;"><strong><span style="font-size:15px; color:#FFFFFF;">$Title</span></strong><br>
+                                                                                    <td align="center" style="background-color:#000000; vertical-align:top; text-align:center; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#FFFFFF; font-size:20px;"><strong><span style="font-size:15px; color:#FFFFFF;">$Title</span></strong><br>
                                                                                         <span style="font-size:13px; color:#FFFFFF;">$Model</span></td>
                                                                                 </tr>
 $widePriceRows
