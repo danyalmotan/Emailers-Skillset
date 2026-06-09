@@ -58,6 +58,26 @@ function Render-PriceRows {
     ($parts -join "`r`n")
 }
 
+function Render-WidePriceRows {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object[]]$Rows
+    )
+
+    $parts = for ($index = 0; $index -lt $Rows.Count; $index++) {
+        $row = $Rows[$index]
+        $borderStyle = if ($index -lt ($Rows.Count - 1)) { ' border-bottom:1px solid #000000;' } else { '' }
+
+@"
+                                                                                <tr>
+                                                                                    <td style="background-color:#FFFFFF; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:20px;$borderStyle"><span style="font-size:14px;"><span style="color:#000000;">$($row.Label)&nbsp;</span></span><span style="font-size:24px;"><span style="color:#000000;"><strong>&nbsp;$($row.Value)</strong></span></span></td>
+                                                                                </tr>
+"@
+    }
+
+    ($parts -join "`r`n")
+}
+
 function Render-ProductCard {
     param(
         [Parameter(Mandatory = $true)]
@@ -225,6 +245,128 @@ $CardHtml
 "@
 }
 
+function Render-WideProductSection {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$BackgroundColor,
+
+        [string]$PromoHtml,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Href,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ImageSrc,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ImageAlt,
+
+        [Parameter(Mandatory = $true)]
+        [int]$ImageWidth,
+
+        [Parameter(Mandatory = $true)]
+        [int]$ImageHeight,
+
+        [Parameter(Mandatory = $true)]
+        [int]$ImageCellHeight,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Title,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Model,
+
+        [Parameter(Mandatory = $true)]
+        [object[]]$Rows,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ButtonSrc,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ButtonAlt,
+
+        [Parameter(Mandatory = $true)]
+        [int]$ButtonWidth,
+
+        [Parameter(Mandatory = $true)]
+        [int]$ButtonHeight
+    )
+
+    $widePriceRows = Render-WidePriceRows -Rows $Rows
+
+@"
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:$BackgroundColor; width:600px;" width="600">
+                            <tbody>
+                                <tr>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+$PromoHtml
+                                <tr>
+                                    <td align="center" valign="top">
+                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:586px;" width="586">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="width:43px;"></td>
+                                                    <td style="width:250px; background-color:$BackgroundColor;" width="250">
+                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%;" width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td height="16" style="font-size:1px; line-height:1px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="center" height="$ImageCellHeight" style="text-align:center; vertical-align:middle;" valign="middle"><a href="$Href" target="_blank"><img alt="$ImageAlt" border="0" height="$ImageHeight" src="$ImageSrc" style="display:block; width:${ImageWidth}px; height:${ImageHeight}px; margin:0 auto;" width="$ImageWidth"></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td height="16" style="font-size:1px; line-height:1px;"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width:250px; background-color:$BackgroundColor;" width="250">
+                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%;" width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td height="20" style="font-size:1px; line-height:1px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="center">
+                                                                        <table align="center" border="0" cellpadding="5" cellspacing="0" style="border-collapse:collapse; border:1px solid #000000; width:220px;" width="220">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td style="background-color:#000000; vertical-align:top; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#FFFFFF; font-size:20px;"><strong><span style="font-size:15px; color:#FFFFFF;">$Title</span></strong><br>
+                                                                                        <span style="font-size:13px; color:#FFFFFF;">$Model</span></td>
+                                                                                </tr>
+$widePriceRows
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td height="18" style="font-size:1px; line-height:1px;"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="center"><a href="$Href" target="_blank"><img alt="$ButtonAlt" border="0" height="$ButtonHeight" src="$ButtonSrc" style="display:block; width:${ButtonWidth}px; height:${ButtonHeight}px; margin:0 auto;" width="$ButtonWidth"></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td style="width:43px;"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+"@
+}
+
 function Render-ImagePromo {
     param(
         [Parameter(Mandatory = $true)]
@@ -249,6 +391,31 @@ function Render-ImagePromo {
 @"
                                 <tr>
                                     <td align="center" style="text-align:center;"><a href="$Href" target="_blank"><img alt="$Alt" border="0" height="$Height" src="$ImageSrc" style="display:block; width:${Width}px; height:${Height}px; margin:0 auto;" width="$Width"></a></td>
+                                </tr>
+                                <tr>
+                                    <td height="20" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+"@
+}
+
+function Render-StaticBanner {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ImageSrc,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Alt,
+
+        [Parameter(Mandatory = $true)]
+        [int]$Width,
+
+        [Parameter(Mandatory = $true)]
+        [int]$Height
+    )
+
+@"
+                                <tr>
+                                    <td align="center" style="text-align:center;"><img alt="$Alt" border="0" height="$Height" src="$ImageSrc" style="display:block; width:${Width}px; height:${Height}px; margin:0 auto;" width="$Width"></td>
                                 </tr>
                                 <tr>
                                     <td height="20" style="font-size:1px; line-height:1px;"></td>
@@ -306,6 +473,12 @@ $footerHtml = $footerHtml.Replace('©', '&copy;')
 $buyNowButton = 'Button_Buy_Now_Black.png'
 $learnMoreButton = 'Button_Learn_More.png'
 
+foreach ($requiredLocalAsset in @('Promo_Signin_3.png', 'Promo_Signin_4.png')) {
+    if (-not (Test-Path -LiteralPath (Join-Path $outputFolder $requiredLocalAsset))) {
+        throw "Missing required local asset: $requiredLocalAsset"
+    }
+}
+
 $s26Card = Render-ProductCard -Href 'https://www.samsung.com/za/smartphones/galaxy-s26-ultra/buy/' -ImageSrc 'Product_S26_Ultra.png' -ImageAlt 'Galaxy S26 Ultra' -ImageWidth 148 -ImageHeight 150 -ImageCellHeight 170 -Title 'Galaxy S26 Ultra' -Model 'SM-S948 512GB' -Rows @(@{ Label = 'Now'; Value = 'R35 999' }) -ButtonSrc $buyNowButton -ButtonAlt 'Buy now' -ButtonWidth 134 -ButtonHeight 50
 $watchCard = Render-ProductCard -Href 'https://www.samsung.com/za/watches/galaxy-watch/galaxy-watch-ultra-2025-47mm-titanium-blue-lte-sm-l705fzb1xfa/buy/?modelCode=SM-L705FZB1XFA' -ImageSrc 'Product_Watch_Ultra.png' -ImageAlt 'Galaxy Watch Ultra' -ImageWidth 131 -ImageHeight 150 -ImageCellHeight 170 -Title 'Galaxy Watch Ultra' -Model 'SM-L705FZB1XFA' -Rows @(@{ Label = 'Now'; Value = 'R12 999' }) -ButtonSrc $buyNowButton -ButtonAlt 'Buy now' -ButtonWidth 134 -ButtonHeight 50
 $tabCard = Render-ProductCard -Href 'https://www.samsung.com/za/tablets/galaxy-tab-s10-fe/buy/?modelCode=SM-X520NLBAAFA' -ImageSrc 'Product_Tab_S10_FE.png' -ImageAlt 'Galaxy Tab S10 FE' -ImageWidth 225 -ImageHeight 150 -ImageCellHeight 168 -Title 'Galaxy Tab S10 FE Wi-Fi' -Model 'SM-X520NLBAAFA' -Rows @(@{ Label = 'Now'; Value = 'R11 499' }, @{ Label = 'Save'; Value = 'R1 296' }) -ButtonSrc $buyNowButton -ButtonAlt 'Buy now' -ButtonWidth 134 -ButtonHeight 50
@@ -318,15 +491,18 @@ $freezerCard = Render-ProductCard -Href 'https://www.samsung.com/za/refrigerator
 $washerCard = Render-ProductCard -Href 'https://www.samsung.com/za/washers-and-dryers/washing-machines/ww7400t-11kg-black-ww11cgp44dsbfa/' -ImageSrc 'Product_AI_Front_Load_11kg.png' -ImageAlt '11kg AI front load with Eco bubble' -ImageWidth 108 -ImageHeight 150 -ImageCellHeight 170 -Title '11kg AI Front Load' -Model 'WW11CGP44DSBFA' -Rows @(@{ Label = 'Now'; Value = 'R11 999' }) -ButtonSrc $buyNowButton -ButtonAlt 'Buy now' -ButtonWidth 134 -ButtonHeight 50
 
 $firstPromo = Render-ImagePromo -BackgroundColor '#E7F4FA' -Href 'https://www.samsung.com/za/smartphones/galaxy-s26-ultra/buy/' -ImageSrc 'Promo_Save_With_Float@2x.png' -Alt 'Sign in or use code LSV50 to save up to R5 000 off your cart' -Width 230 -Height 106
-$secondPromo = Render-ImagePromo -BackgroundColor '#E7F4FA' -Href 'https://www.samsung.com/za/tablets/galaxy-tab-s10-fe/buy/?modelCode=SM-X520NLBAAFA' -ImageSrc 'Promo_Signin_R2000@2x.png' -Alt 'Sign in and get up to R2 000 off your cart' -Width 230 -Height 50
-$odysseyPromo = Render-LivePromo -Text 'Use code ODYSSEY and get 10% off your cart'
+$tabPromo = Render-StaticBanner -ImageSrc 'Promo_Signin_3.png' -Alt 'Sign in and get up to R2 296 off your cart' -Width 562 -Height 50
+$odysseyPromo = Render-StaticBanner -ImageSrc 'Promo_Signin_4.png' -Alt 'Use code ODYSSEY and get 10% off your cart' -Width 559 -Height 49
+
+$tabWideSection = Render-WideProductSection -BackgroundColor '#E7F4FA' -PromoHtml $tabPromo -Href 'https://www.samsung.com/za/tablets/galaxy-tab-s10-fe/buy/?modelCode=SM-X520NLBAAFA' -ImageSrc 'Product_Tab_S10_FE.png' -ImageAlt 'Galaxy Tab S10 FE' -ImageWidth 225 -ImageHeight 150 -ImageCellHeight 184 -Title 'Galaxy Tab S10 FE Wi-Fi' -Model 'SM-X520NLBAAFA' -Rows @(@{ Label = 'Now'; Value = 'R11 499' }, @{ Label = 'Save'; Value = 'R1 296' }) -ButtonSrc $buyNowButton -ButtonAlt 'Buy now' -ButtonWidth 134 -ButtonHeight 50
+$sideBySideWideSection = Render-WideProductSection -BackgroundColor '#E7F4FA' -PromoHtml '' -Href 'https://www.samsung.com/za/refrigerators/side-by-side/rs4000dc-sbside-with-large-capacity-rs4000dc-side-by-side-with-large-capacity-564l-black-rs57dg4000b4fa/' -ImageSrc 'Product_Side_By_Side_564L.png' -ImageAlt '564L side-by-side refrigerator' -ImageWidth 78 -ImageHeight 150 -ImageCellHeight 184 -Title '564L Side-by-side' -Model 'RS57DG4000B4FA' -Rows @(@{ Label = 'Now'; Value = 'R14 999' }) -ButtonSrc $buyNowButton -ButtonAlt 'Buy now' -ButtonWidth 134 -ButtonHeight 50
 
 $productSections = @(
     (Render-TwoCardSection -BackgroundColor '#E7F4FA' -PromoHtml $firstPromo -LeftCard $s26Card -RightCard $watchCard)
-    (Render-SingleCardSection -BackgroundColor '#E7F4FA' -PromoHtml $secondPromo -CardHtml $tabCard)
+    $tabWideSection
     (Render-TwoCardSection -BackgroundColor '#D6D1EA' -PromoHtml '' -LeftCard $tvCard -RightCard $soundbarCard)
     (Render-TwoCardSection -BackgroundColor '#E7F4FA' -PromoHtml $odysseyPromo -LeftCard $g7Card -RightCard $g4Card)
-    (Render-SingleCardSection -BackgroundColor '#E7F4FA' -PromoHtml '' -CardHtml $sideBySideCard)
+    $sideBySideWideSection
     (Render-TwoCardSection -BackgroundColor '#E7F4FA' -PromoHtml '' -LeftCard $freezerCard -RightCard $washerCard)
 ) -join "`r`n"
 
@@ -398,49 +574,63 @@ $html = @"
 
 $productSections
 
-                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#A39CC4; width:600px;" width="600">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF; width:600px;" width="600">
                             <tbody>
                                 <tr>
-                                    <td height="38" style="font-size:1px; line-height:1px;"></td>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
                                 </tr>
                                 <tr>
-                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:18px; line-height:22px; font-weight:700;">Get Match Ready</td>
+                                    <td align="center">
+                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#A39CC4; width:550px; border-radius:22px;" width="550">
+                                            <tbody>
+                                                <tr>
+                                                    <td height="42" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:36px; line-height:42px; font-weight:700;">Get Match Ready</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="28" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center"><a href="https://www.samsung.com/za/samsung-live/" target="_blank"><img alt="Samsung Live Shop" border="0" height="84" src="Samsung_Live_Shop.png" style="display:block; width:103px; height:84px; margin:0 auto;" width="103"></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="28" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:22px; line-height:28px; font-weight:700; padding:0 28px;">Live Shopping Event<br>
+                                                        A New Line-up is Taking the Field</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="22" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:14px; line-height:20px; padding:0 42px;">Be among the first to discover Samsung's<br>
+                                                        latest innovations, exciting product reveals,<br>
+                                                        and exclusive offers.</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="18" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:14px; line-height:20px;">Save the Date: 10 June 2026</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="12" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:14px; line-height:20px; font-weight:700; padding:0 24px;"><a href="https://www.samsung.com/za/samsung-live/" style="color:#FFFFFF; text-decoration:none;" target="_blank">https://www.samsung.com/za/samsung-live/</a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="34" style="font-size:1px; line-height:1px;"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td height="16" style="font-size:1px; line-height:1px;"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center"><a href="https://www.samsung.com/za/samsung-live/" target="_blank"><img alt="Samsung Live Shop" border="0" height="84" src="Samsung_Live_Shop.png" style="display:block; width:103px; height:84px; margin:0 auto;" width="103"></a></td>
-                                </tr>
-                                <tr>
-                                    <td height="18" style="font-size:1px; line-height:1px;"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:20px; line-height:22px; font-weight:700;">Live Shopping Event<br>
-                                        A New Line-up is Taking the Field</td>
-                                </tr>
-                                <tr>
-                                    <td height="14" style="font-size:1px; line-height:1px;"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:14px; line-height:20px; padding:0 28px;">Be among the first to discover Samsung's<br>
-                                        latest innovations, exciting product reveals,<br>
-                                        and exclusive offers.</td>
-                                </tr>
-                                <tr>
-                                    <td height="12" style="font-size:1px; line-height:1px;"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:14px; line-height:20px;">Save the Date: 10 June 2026</td>
-                                </tr>
-                                <tr>
-                                    <td height="8" style="font-size:1px; line-height:1px;"></td>
-                                </tr>
-                                <tr>
-                                    <td align="center" style="color:#FFFFFF; text-align:center; font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; font-size:14px; line-height:20px;"><a href="https://www.samsung.com/za/samsung-live/" style="color:#FFFFFF; text-decoration:none;" target="_blank">https://www.samsung.com/za/samsung-live/</a></td>
-                                </tr>
-                                <tr>
-                                    <td height="32" style="font-size:1px; line-height:1px;"></td>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
                                 </tr>
                             </tbody>
                         </table>
