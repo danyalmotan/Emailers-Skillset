@@ -1,0 +1,277 @@
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+Add-Type -AssemblyName System.IO.Compression
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+function Write-Utf8NoBom {
+    param(
+        [string]$Path,
+        [string]$Content
+    )
+
+    $encoding = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($Path, $Content, $encoding)
+}
+
+function New-MailerHtml {
+    param(
+        [string]$AssetPrefix
+    )
+
+    $storeLink = 'https://www.mtn.co.za/shop/deals/device/contract/samsung/galaxy-s26-256gb/1-SETZT43'
+    $learnMoreLink = 'https://www.samsung.com/za/smartphones/galaxy-s26-ultra/'
+
+    return @"
+<!DOCTYPE html>
+<html>
+    <head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=600"><meta name="format-detection" content="telephone=no">
+        <title>Samsung South Africa</title>
+    </head>
+    <body style="background-color:#555555; margin:0; padding:0;"><span class="preheader" style="color:transparent; display:none; height:0; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all; visibility:hidden; width:0;">Upgrade to any Galaxy S26 Series device and get a R3 000 Mastercard voucher.</span>
+        <table border="0" cellpadding="0" cellspacing="0" id="bodyTable" style="height:100%;" width="100%">
+            <tbody>
+                <tr>
+                    <td align="center" valign="top">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td align="center" valign="top" width="10"></td>
+                                    <td style="font-family:arial,sans-serif; font-size:14px; line-height:18px; color:#000000; text-align:center;" valign="top" width="500"><br>
+                                        <span style="color:#000000;">ZZZZZ</span><br>
+                                        &nbsp; &nbsp; &nbsp;&nbsp;</td>
+                                    <td align="center" valign="top" width="10"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#05050D; width:600px;" width="600">
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:center;"><a href="$storeLink" target="_blank"><img alt="Upgrade to any Galaxy S26 Series device and get a R3 000 Mastercard voucher" border="0" height="857" src="${AssetPrefix}Group 2762.png" style="display:block; width:600px; height:857px;" width="600"></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF;" width="600">
+                            <tbody>
+                                <tr>
+                                    <td height="18" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><a href="$storeLink" target="_blank"><img alt="MTN featured Galaxy S26 offer" border="0" height="662" src="${AssetPrefix}Group 2763.png" style="display:block; width:520px; height:662px; margin:auto;" width="520"></a></td>
+                                </tr>
+                                <tr>
+                                    <td height="26" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#E7EAF1;" width="600">
+                            <tbody>
+                                <tr>
+                                    <td height="42" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 40px;"><span style="font-size:36px; line-height:46px;"><strong><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">Everyday slimness,<br>long-lasting battery</span></strong></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="18" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 44px;"><span style="font-size:19px; line-height:28px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">Enjoy refined comfort in a slim design that fits effortlessly in your hand and a battery that keeps your day uninterrupted.</span></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="26" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><a href="$learnMoreLink" target="_blank"><img alt="Galaxy S26 compact design and Android Authority review" border="0" height="656" src="${AssetPrefix}Group 2764.png" style="display:block; width:520px; height:656px; margin:auto;" width="520"></a></td>
+                                </tr>
+                                <tr>
+                                    <td height="34" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#E7EAF1;" width="600">
+                            <tbody>
+                                <tr>
+                                    <td height="8" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 40px;"><span style="font-size:36px; line-height:42px;"><strong><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">Compared with Galaxy S24</span></strong></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding-right:25px;"><span style="font-size:24px; line-height:42px;"><strong><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">Galaxy S26</span></strong></span></td>
+                                                    <td style="padding-left:25px;"><span style="font-size:24px; line-height:42px;"><strong><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#A2A6B2;">Galaxy S24</span></strong></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="22" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><a href="$learnMoreLink" target="_blank"><img alt="Galaxy S26 compared with Galaxy S24 on slimness, battery and video playback" border="0" height="385" src="${AssetPrefix}Image 217.png" style="display:block; width:520px; height:385px; margin:auto;" width="520"></a></td>
+                                </tr>
+                                <tr>
+                                    <td height="22" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><a href="$learnMoreLink" target="_blank"><img alt="Learn more" border="0" height="50" src="${AssetPrefix}Group 2719.png" style="display:block; width:176px; height:50px; margin:auto;" width="176"></a></td>
+                                </tr>
+                                <tr>
+                                    <td height="18" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 44px 34px 44px;"><span style="font-size:11px; line-height:16px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#666666;">*Actual battery life varies by network environment, features and apps used, frequency of calls and messages, the number of times charged, and many other factors. Estimated against the average usage profile compiled by UX Connect Research. Independently assessed by UX Connect Research between 2026.1.8-2026.1.30 in US and UK with pre-release versions of SM-S942, SM-S924 and SM-S948 under default settings using LTE and 5G Sub6 networks. Not tested under 5G mmWave network.</span></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF;" width="600">
+                            <tbody>
+                                <tr>
+                                    <td height="30" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><img alt="How to win big" border="0" height="574" src="${AssetPrefix}Group 2765.png" style="display:block; width:520px; height:574px; margin:auto;" width="520"></td>
+                                </tr>
+                                <tr>
+                                    <td height="22" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <table align="center" border="0" cellpadding="8" cellspacing="0" style="background-color:#000000; width:320px;" width="320">
+                                            <tbody>
+                                                <tr>
+                                                    <td height="18" style="font-size:10px; line-height:18px; text-align:center;"><span style="font-size:16px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#FFFFFF;">Deal valid until 06 July 2026</span></span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="22" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><img alt="MTN" border="0" height="48" src="${AssetPrefix}Image 552.png" style="display:block; width:96px; height:48px; margin:auto;" width="96"></td>
+                                </tr>
+                                <tr>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <table align="center" border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="center"><a href="https://www.facebook.com/SamsungSouthAfrica" style="display:inline-block;" target="_blank"><img alt="Facebook" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_137.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://www.instagram.com/samsungsa/" style="display:inline-block;" target="_blank"><img alt="Instagram" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_138.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://twitter.com/SamsungSA" style="display:inline-block;" target="_blank"><img alt="X" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_139.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://www.youtube.com/user/samsungblog" style="display:inline-block;" target="_blank"><img alt="Youtube" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_140.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://www.linkedin.com/company/samsung-south-africa?trk=company_logo" style="display:inline-block;" target="_blank"><img alt="LinkedIn" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_141.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://www.samsung.com/za/apps/samsung-members/" style="display:inline-block;" target="_blank"><img alt="Samsung Members" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_142.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://www.samsung.com/za/apps/samsung-wallet/" style="display:inline-block;" target="_blank"><img alt="Samsung Wallet" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_143.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                    <td width="12"></td>
+                                                    <td align="center"><a href="https://www.samsung.com/za/offer/samsung-care-plus/" style="display:inline-block;" target="_blank"><img alt="Samsung Care Plus" border="0" height="48" src="https://cdn19.mailercdn.net/users/assets/379/images/group_144.png" style="display:block; width:48px; height:48px;" width="48"></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="22" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;"><span style="font-size:16px; line-height:20px;"><strong><span style="font-family:Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif;"><a href="https://www.samsung.com/za/info/legal/" style="color:#000000; text-decoration:none;" target="_blank">Legal</a> <span style="color:#000000;">|</span> <a href="https://www.samsung.com/za/info/privacy/" style="color:#000000; text-decoration:none;" target="_blank">Privacy Policy</a></span></strong></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="20" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 36px;"><span style="font-size:13px; line-height:20px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">MTN Terms and Conditions apply. Offer valid whilst stocks last. E&amp;OE. We cannot be held liable for any misrepresentation caused by unintentional copy errors, typing errors, and/or omissions that may occur in any of our materials.</span></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="20" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 36px;"><span style="font-size:13px; line-height:20px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">This email has been sent to members who have requested to join the mailing list.<br>If you wish to unsubscribe from the mailing list, please click <a href="YYYYY" style="color:#696969;" target="_blank">Unsubscribe</a>.</span></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="24" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center; padding:0 36px;"><span style="font-size:13px; line-height:20px;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif; color:#000000;">&copy; Copyright 2017-2026 Samsung Electronics. All Rights Reserved.<br>* Do not reply. The email address is for outgoing emails only.</span></span></td>
+                                </tr>
+                                <tr>
+                                    <td height="28" style="font-size:1px; line-height:1px;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
+"@
+}
+
+$jobRoot = 'c:\Users\user\OneDrive\digidanWork\Mailers\2026\ZAS26088178  2026_SSA Retainer_Digital_CRM MX_Channel_MTN_S Series Sustain_Mailer_W25'
+$sourceAssets = Join-Path $jobRoot 'ZAS26088178_images export'
+$publishedRoot = Join-Path $jobRoot 'Published'
+$baseName = 'ZAS26088178_MTN_S_Sustain_Mailer_W25'
+$outputDir = Join-Path $publishedRoot $baseName
+$rootHtmlPath = Join-Path $publishedRoot ($baseName + '.html')
+$folderHtmlPath = Join-Path $outputDir ($baseName + '.html')
+$zipPath = Join-Path $outputDir ($baseName + '.zip')
+
+New-Item -Path $publishedRoot -ItemType Directory -Force | Out-Null
+New-Item -Path $outputDir -ItemType Directory -Force | Out-Null
+
+Get-ChildItem -Path $sourceAssets -Recurse -File | Where-Object {
+    $_.Name -notmatch '@2x' -and $_.Extension -in '.png', '.jpg', '.jpeg', '.gif'
+} | ForEach-Object {
+    Copy-Item -Path $_.FullName -Destination (Join-Path $outputDir $_.Name) -Force
+}
+
+$folderHtml = New-MailerHtml -AssetPrefix ''
+$rootHtml = New-MailerHtml -AssetPrefix ($baseName + '/')
+
+Write-Utf8NoBom -Path $folderHtmlPath -Content $folderHtml
+Write-Utf8NoBom -Path $rootHtmlPath -Content $rootHtml
+
+if (Test-Path $zipPath) {
+    Remove-Item $zipPath -Force
+}
+
+$filesToZip = Get-ChildItem -Path $outputDir -File | Where-Object { $_.Extension -ne '.zip' }
+$archive = [System.IO.Compression.ZipFile]::Open($zipPath, [System.IO.Compression.ZipArchiveMode]::Create)
+try {
+    foreach ($file in $filesToZip) {
+        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, $file.FullName, $file.Name, [System.IO.Compression.CompressionLevel]::Optimal) | Out-Null
+    }
+}
+finally {
+    $archive.Dispose()
+}
+
+$zipEntryCount = ([System.IO.Compression.ZipFile]::OpenRead($zipPath)).Entries.Count
+if ($zipEntryCount -ne $filesToZip.Count) {
+    throw "Zip entry count ($zipEntryCount) did not match file count ($($filesToZip.Count))."
+}
