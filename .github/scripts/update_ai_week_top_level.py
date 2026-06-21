@@ -17,6 +17,8 @@ FOOTERS = {
     "SN": ROOT / "footers" / "footer_sn.txt",
 }
 
+UNSUBSCRIBE_URL = "https://samsung-mena-mkt-prod6-m.adobe-campaign.com/webApp/smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true"
+
 TARGETS = {
     "NG": {
         "master": GH_MASTER,
@@ -53,7 +55,7 @@ def sanitize_footer(content: str) -> str:
     content = content.replace("\r\n", "\n")
     content = re.sub(
         r'href="https://samsung-mena-mkt-prod6-m\.adobe-campaign\.com/webApp/smgUnsub[^\"]*"',
-        'href="YYYYY"',
+        f'href="{UNSUBSCRIBE_URL}"',
         content,
     )
     content = content.replace("©", "&copy;")
@@ -77,10 +79,12 @@ def main() -> None:
         master_html = read_text(config["master"])
         footer_html = sanitize_footer(read_text(FOOTERS[code]))
         updated_html = swap_footer(swap_title(master_html, config["title"]), footer_html)
-        if "adobe-campaign.com" in updated_html:
-            raise ValueError(f"Adobe unsubscribe markup still present in {code}")
-        if "YYYYY" not in updated_html or "ZZZZZ" not in updated_html:
-            raise ValueError(f"Missing placeholders in {code}")
+        if "MirrorPageUrl" not in updated_html:
+            raise ValueError(f"Missing MirrorPage markup in {code}")
+        if UNSUBSCRIBE_URL not in updated_html:
+            raise ValueError(f"Missing live unsubscribe URL in {code}")
+        if "YYYYY" in updated_html or "ZZZZZ" in updated_html:
+            raise ValueError(f"Old placeholders still present in {code}")
         write_text(config["target"], updated_html)
 
 

@@ -56,7 +56,11 @@ Where `[code]` = the region code in lowercase (e.g. `footer_ssa.txt` for South A
 
 **Always read the footer file** before writing any HTML. Copy it in exactly. Do not reconstruct social icon links, legal links, or T&C text from memory — these differ per region.
 
-**Critical:** The footer files contain the real Adobe Campaign unsubscribe URL (e.g. `https://samsung-mena-mkt-prod6-m.adobe-campaign.com/webApp/smgUnsub?id=<%= escapeUrl(...) %>...`). When copying the footer into generated HTML, **always replace that href value with `YYYYY`**. The rule is: generated HTML must never contain real Adobe Campaign syntax — YYYYY and ZZZZZ only.
+**Critical:** The footer files may contain older unsubscribe variants. When copying the footer into generated HTML, always normalize the unsubscribe href to this exact live URL:
+
+`https://samsung-mena-mkt-prod6-m.adobe-campaign.com/webApp/smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true`
+
+Do not replace it with a placeholder.
 
 ---
 
@@ -263,11 +267,15 @@ Replace `[PREHEADER TEXT]` with the email preview text (usually the main headlin
 
 **Body background colour:** Use `#555555` (dark grey). The body bg is the colour outside the 600px email container — it is consistently a dark grey in Samsung SA mailers, regardless of the campaign colours inside the email. Do NOT default to `#dddddd`.
 
-**ZZZZZ / YYYYY placeholders — ALWAYS use these. Never use the actual Adobe Campaign syntax.** The HTML goes through two systems: Everlytic first (where Danny edits and tests), then Samsung's GCDM system (Adobe Campaign). Everlytic would mangle the Adobe Campaign dynamic tags if they were included directly. Danny does a manual find/replace before sending to Samsung:
-- `ZZZZZ` — placeholder for the entire View Online link block (in the header)
-- `YYYYY` — placeholder for the unsubscribe URL href value only (in the footer)
+**Use the live MirrorPage and unsubscribe markup in the generated HTML.** Do not replace them with placeholders.
 
-Even if you see the actual Adobe Campaign syntax in a reference file, **always output ZZZZZ and YYYYY** in your generated HTML. No exceptions.
+Use this exact View Online block in the header:
+
+`<% if ( document.mode != 'mirror' && document.mode != 'forward' ) { %><a _type="mirrorPage" href="<%@ include view='MirrorPageUrl' %>" target="_blank" rel="noopener noreferrer" class="header-dm-text inline-link" style="color: #000001; text-decoration: none;"><span class="inline-link" style="text-decoration: none; color: #B8B7B4;">View online</span></a><% } %>`
+
+Use this exact unsubscribe href in the footer:
+
+`https://samsung-mena-mkt-prod6-m.adobe-campaign.com/webApp/smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true`
 
 ```html
     <body style="background-color:#555;"><!-- Preheader START =========================================================================== --><span class="preheader" style="color: transparent; display: none; height: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden; width: 0;"> [PREHEADER TEXT] </span> <!-- Preheader END =========================================================================== -->
@@ -281,7 +289,7 @@ Even if you see the actual Adobe Campaign syntax in a reference file, **always o
                                     <td align="center" valign="top" width="10"></td>
                                     <!--olhide start-->
                                     <td style="font-family: arial, sans-serif; font-size: 14px; line-height: 18px; color: rgb(0, 0, 0); text-align: center;" valign="top" width="500"><br>
-                                        <span style="color:#000000;">ZZZZZ</span><br>
+                                        <% if ( document.mode != 'mirror' && document.mode != 'forward' ) { %><a _type="mirrorPage" href="<%@ include view='MirrorPageUrl' %>" target="_blank" rel="noopener noreferrer" class="header-dm-text inline-link" style="color: #000001; text-decoration: none;"><span class="inline-link" style="text-decoration: none; color: #B8B7B4;">View online</span></a><% } %><br>
                                         &nbsp; &nbsp; &nbsp;&nbsp;</td>
                                     <!--olhide end-->
                                     <td align="center" valign="top" width="10"></td>
@@ -502,65 +510,18 @@ Example:
 - If a `Published/` folder contains multiple mailer folders, create **one zip per mailer folder**
 - If a `Published/` folder contains one or more mailers, also create the matching **HTML-only root copy** for each mailer at the root of `Published/`
 
-### Use A Server Reference Table File
+### Shared server-reference bundle
 
-Use this workflow when one job contains **many mailers that reuse many of the same images** and Danny does **not** want to upload every mailer zip to Everlytic just to get CDN image URLs.
+This older `ALL_IMAGES/server.html` workflow is no longer required.
 
-This is an **additional packaging step** on top of the normal mailer folders and per-folder zip files. You still build every mailer folder normally first.
+Do **not** create `server.html` as part of the standard Samsung mailer output anymore. The current workflow is simply:
 
-#### When to use it
+1. Build the mailer inside `Published/[mailer name]/`
+2. Copy only the images actually used by that HTML into that mailer folder
+3. Create the matching root HTML-only copy in `Published/`
+4. Create the matching ZIP inside the mailer folder
 
-Use it when:
-- There are multiple mailers in one `Published/` batch
-- Many of those mailers reuse the same hero, button, pod, or section images
-- Uploading each mailer zip separately would create unnecessary duplication on the Everlytic server
-
-#### Required workflow
-
-1. Build **every mailer folder normally**:
-    - one folder per mailer inside `Published/`
-    - one HTML file inside that folder with local image references
-    - only the images actually used by that HTML
-    - one matching zip per mailer folder
-    - one matching HTML-only copy of that mailer at the root of `Published/`
-2. Then create an additional folder inside `Published/` called:
-    - `ALL_IMAGES/`
-3. Copy **one deduplicated copy** of every unique image used across the newly-created mailer folders into `ALL_IMAGES/`
-4. Create **one HTML file** inside `ALL_IMAGES/` called:
-    - `server.html`
-5. `server.html` must contain **one table** with these 3 columns:
-    - Column 1: sequential number starting from `1`
-    - Column 2: the uploaded image preview from `ALL_IMAGES/` and its upload filename
-    - Column 3: the original local filename(s) used inside the generated mailer HTML files
-6. Danny uploads only the `ALL_IMAGES/` bundle to Everlytic
-7. After Everlytic rewrites the image `src` values to CDN URLs in `server.html`, use that table as the source of truth to replace the local `src` values in every generated mailer HTML
-
-#### Critical rules
-
-- Deduplicate by **image content**, not just by filename
-- If two different source images share the same basename, give the copied file in `ALL_IMAGES/` a unique sanitized upload filename and keep the original local filename in the table mapping
-- Keep `ALL_IMAGES/` limited to the **current batch only** - do not mix in legacy files from older published jobs
-- Do **not** replace permanent footer social icon CDN URLs - only replace local image `src` values that belong to the generated mailer folders
-- Prefer **unique sanitized local filenames** inside the generated mailers when different assets would otherwise collide under the same basename
-- `server.html` should preserve a machine-readable mapping when practical, for example a row-level attribute like `data-originals="file_a.png | file_b.png"`
-
-#### Practical goal
-
-This lets Danny upload **one shared image bundle** to Everlytic, get the CDN URLs once from `server.html`, then update all generated mailers from that reference table instead of importing each mailer package one by one.
-
-```
-ZAS26088076  [job name]/
-├── ZAS26088076  [job name].png              ← original design file
-└── Published/
-    ├── ZAS26088076  [job name].html         ← HTML-only root copy Danny updates with CDN refs
-    └── ZAS26088076  [job name]/
-        ├── ZAS26088076  [job name].html     ← local image-linked output
-        ├── Group_2619.png                   ← cut-up images copied flat here, filenames sanitized
-        ├── Group_2620_2x.png
-        ├── Image_558_2x.png
-        ├── ...
-        └── ZAS26088076  [job name].zip
-```
+If Danny later wants a one-off shared-image bundle for a specific batch, treat that as an explicit special request rather than the default workflow.
 
 **Critical rules:**
 - **Always create `Published/`** before generating deliverables
@@ -1794,7 +1755,7 @@ We cannot be held liable for any misrepresentation caused by unintentional copy 
 &nbsp; &nbsp;<br>
 This email has been sent to members who have requested to join the mailing list.<br>
 To unsubscribe from receiving promotional and marketing information,<br>
-click to&nbsp;<a _type="optout" data-sap-hpa-ceimo-link-type="EasyUnsubscribe" href="YYYYY" rel="noopener noreferrer" style="color: #696969;" target="_blank" title="Unsubscribe">Unsubscribe</a></span></span><span style="color:#000000;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif;">.</span></span></span></span></td>
+click to&nbsp;<a _type="optout" data-sap-hpa-ceimo-link-type="EasyUnsubscribe" href="https://samsung-mena-mkt-prod6-m.adobe-campaign.com/webApp/smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true" rel="noopener noreferrer" style="color: #696969;" target="_blank" title="Unsubscribe">Unsubscribe</a></span></span><span style="color:#000000;"><span style="font-family:avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif;">.</span></span></span></span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1977,7 +1938,7 @@ The existing Samsung mailer boilerplate already uses `mso-hide: all` on the preh
 - **Footer file for SA** uses `footer_ssa.txt` — there is no `footer_sa.txt`
 - **All images use the 1x (standard) version** — never @2x. File sizes over 600KB are unacceptable in email
 - **Duplicate button variants** — one button image is picked and reused consistently throughout; numbered variants (Group 2479, 2480, 2481 etc.) are interchangeable
-- **ZZZZZ and YYYYY** are in place — never the actual Adobe Campaign `<%@ ... %>` syntax
+- **MirrorPage and unsubscribe markup** are in place — no `ZZZZZ` or `YYYYY` placeholders remain
 - **Font sizes** match the visual weight of text in the main design image — not hardcoded to a single value
 - **Each distinct visual block** in the JPG is a separate `<table>` — except contiguous same-background opening blocks which share the mailcont table
 - No `border-radius`, `float`, `position`, `flexbox`, or `grid` CSS used (note: `float` on left/right border strip images in the sliced-border technique is acceptable)

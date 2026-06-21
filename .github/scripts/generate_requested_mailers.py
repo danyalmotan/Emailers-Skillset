@@ -18,6 +18,8 @@ BRANDSTORE_SOURCE = ROOT / r"2026\ZAS26088075  2026_SSA Retainer_Digital_CRM MX 
 
 SHARP = "Samsung Sharp Sans, avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif"
 BODY = "avant garde,avantgarde,century gothic,centurygothic,applegothic,sans-serif"
+MIRROR_PAGE_BLOCK = "<% if ( document.mode != 'mirror' && document.mode != 'forward' ) { %><a _type=\"mirrorPage\" href=\"<%@ include view='MirrorPageUrl' %>\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"header-dm-text inline-link\" style=\"color: #000001; text-decoration: none;\"><span class=\"inline-link\" style=\"text-decoration: none; color: #B8B7B4;\">View online</span></a><% } %>"
+UNSUBSCRIBE_URL = "https://samsung-mena-mkt-prod6-m.adobe-campaign.com/webApp/smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true"
 
 FOOTER_FILES = {
     "ng": ROOT / "footers" / "footer_ng.txt",
@@ -51,7 +53,7 @@ def replace_unsubscribe_markup(content: str) -> str:
     content = content.replace("\r\n", "\n")
     content = re.sub(
         r'href="https://samsung-mena-mkt-prod6-m\.adobe-campaign\.com/webApp/smgUnsub[^\"]*"',
-        'href="YYYYY"',
+        f'href="{UNSUBSCRIBE_URL}"',
         content,
     )
     content = content.replace("©", "&copy;")
@@ -143,7 +145,7 @@ def document_shell(title: str, preheader: str, content: str, footer: str, body_b
         "                        <tr>\n"
         '                            <td align="center" valign="top" width="10"></td>\n'
         '                            <td style="font-family: arial, sans-serif; font-size: 14px; line-height: 18px; color: rgb(0, 0, 0); text-align: center;" valign="top" width="500"><br>\n'
-        '                                <span style="color:#000000;">ZZZZZ</span><br>\n'
+        f'                                {MIRROR_PAGE_BLOCK}<br>\n'
         '                                &nbsp; &nbsp; &nbsp;&nbsp;</td>\n'
         '                            <td align="center" valign="top" width="10"></td>\n'
         "                        </tr>\n"
@@ -185,10 +187,12 @@ def flatten_output(job_dir: Path, basename: str, html_content: str, image_map: d
     missing = sorted(src for src in local_srcs if not (folder / src).exists())
     if missing:
         raise FileNotFoundError(f"Missing local assets for {basename}: {missing}")
-    if "YYYYY" not in html_content or "ZZZZZ" not in html_content:
-        raise ValueError(f"Missing campaign placeholders in {basename}")
-    if "adobe-campaign.com" in html_content:
-        raise ValueError(f"Adobe unsubscribe markup still present in {basename}")
+    if "MirrorPageUrl" not in html_content:
+        raise ValueError(f"Missing MirrorPage markup in {basename}")
+    if UNSUBSCRIBE_URL not in html_content:
+        raise ValueError(f"Missing live unsubscribe URL in {basename}")
+    if "YYYYY" in html_content or "ZZZZZ" in html_content:
+        raise ValueError(f"Old campaign placeholders still present in {basename}")
 
     zip_path = folder / f"{basename}.zip"
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:

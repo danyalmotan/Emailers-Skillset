@@ -4,7 +4,7 @@
     {
       "id": 0,
       "prompt": "I've got a new Samsung mailer job. The JPG design files are at /sessions/compassionate-nice-planck/mnt/Claude/2026/ZAS26088067  2026_SSA Retainer_Digital_CRM CE _ B2B Smart Building _ Mailer _ W11/ZAS26088067  2026_SSA Retainer_Digital_CRM CE _ B2B Smart Building _ Mailer _ W11.jpg and there are also some cut-up images in the same folder (fgdyhtg-0001.jpg and thyjkkuytresdf-0001.jpg). Can you convert this to HTML?",
-      "expected_output": "A complete Samsung SA HTML email file with correct boilerplate (DOCTYPE, preheader, view online, footer with all 8 social icons), Samsung fonts used correctly, text extracted accurately from the JPG, image references using cdn19.mailercdn.net CDN path, saved as an HTML file in the job folder.",
+      "expected_output": "A complete Samsung SA HTML email file with correct boilerplate (DOCTYPE, preheader, live MirrorPage view online block, footer with all 8 social icons), Samsung fonts used correctly, text extracted accurately from the JPG, local relative image references for content images, the live Adobe unsubscribe URL, saved as an HTML file in the job folder.",
       "files": [
         "/sessions/compassionate-nice-planck/mnt/Claude/2026/ZAS26088067  2026_SSA Retainer_Digital_CRM CE _ B2B Smart Building _ Mailer _ W11/ZAS26088067  2026_SSA Retainer_Digital_CRM CE _ B2B Smart Building _ Mailer _ W11.jpg"
       ],
@@ -14,12 +14,6 @@
           "description": "HTML uses correct Samsung Sharp Sans font stack in headings",
           "type": "string_match",
           "value": "Samsung Sharp Sans, avant garde"
-        },
-        {
-          "name": "contains-cdn-url",
-          "description": "All images reference the correct CDN base URL",
-          "type": "string_match",
-          "value": "cdn19.mailercdn.net/users/assets/379/images/"
         },
         {
           "name": "contains-preheader",
@@ -41,9 +35,9 @@
         },
         {
           "name": "contains-footer-unsubscribe",
-          "description": "Footer contains Adobe Campaign unsubscribe link",
+          "description": "Footer contains the live Adobe unsubscribe link",
           "type": "string_match",
-          "value": "smgUnsub"
+          "value": "smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true"
         },
         {
           "name": "contains-600px-width",
@@ -68,7 +62,7 @@
     {
       "id": 1,
       "prompt": "New Samsung job just came in. Please convert this to HTML - the JPG is at /sessions/compassionate-nice-planck/mnt/Claude/2026/RE ZAS26088076  2026_SSA Retainer_Digital_CRM Estore _ Student Mailer _ W12/ZAS26088076  2026_SSA Retainer_Digital_CRM Estore _ Student Mailer _ W12.jpg. There's also an HTML reference file in that same folder from a previous version.",
-      "expected_output": "A complete Samsung SA HTML email with correct boilerplate, Samsung fonts, text extracted from the JPG, CDN image references, standard footer, saved as HTML file.",
+      "expected_output": "A complete Samsung SA HTML email with correct boilerplate, Samsung fonts, text extracted from the JPG, local relative image references for content images, the live MirrorPage block, the live Adobe unsubscribe URL, standard footer, saved as HTML file.",
       "files": [
         "/sessions/compassionate-nice-planck/mnt/Claude/2026/RE ZAS26088076  2026_SSA Retainer_Digital_CRM Estore _ Student Mailer _ W12/ZAS26088076  2026_SSA Retainer_Digital_CRM Estore _ Student Mailer _ W12.jpg"
       ],
@@ -80,22 +74,22 @@
           "value": "Samsung Sharp Sans, avant garde"
         },
         {
-          "name": "contains-cdn-url",
-          "description": "Images reference correct CDN base URL",
-          "type": "string_match",
-          "value": "cdn19.mailercdn.net/users/assets/379/images/"
-        },
-        {
           "name": "contains-preheader",
           "description": "HTML has preheader span",
           "type": "string_match",
           "value": "class=\"preheader\""
         },
         {
-          "name": "contains-footer-unsubscribe",
-          "description": "Footer has Adobe Campaign unsubscribe link",
+          "name": "contains-view-online",
+          "description": "HTML has the live Adobe Campaign view online / mirror page link",
           "type": "string_match",
-          "value": "smgUnsub"
+          "value": "MirrorPageUrl"
+        },
+        {
+          "name": "contains-footer-unsubscribe",
+          "description": "Footer has the live Adobe Campaign unsubscribe link",
+          "type": "string_match",
+          "value": "smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true"
         },
         {
           "name": "contains-600px-width",
@@ -114,7 +108,7 @@
     {
       "id": 2,
       "prompt": "Samsung sent through a new Rewards mailer. Two JPG files at /sessions/compassionate-nice-planck/mnt/Claude/2026/ZAS26088071  2026_SSA Retainer_Digital_CRM Estore _ Rewards Mailer _ W11/ — the files are fgdhntrefwwa-001.jpg and fgdhntrefwwa-002.jpg. Can you build the HTML for this one?",
-      "expected_output": "A complete Samsung SA HTML email built from both JPG files, with correct boilerplate, Samsung fonts, text from both JPGs included, CDN image references, standard footer, saved as HTML.",
+      "expected_output": "A complete Samsung SA HTML email built from both JPG files, with correct boilerplate, Samsung fonts, text from both JPGs included, local relative image references for content images, the live MirrorPage block, the live Adobe unsubscribe URL, standard footer, saved as HTML.",
       "files": [
         "/sessions/compassionate-nice-planck/mnt/Claude/2026/ZAS26088071  2026_SSA Retainer_Digital_CRM Estore _ Rewards Mailer _ W11/fgdhntrefwwa-001.jpg",
         "/sessions/compassionate-nice-planck/mnt/Claude/2026/ZAS26088071  2026_SSA Retainer_Digital_CRM Estore _ Rewards Mailer _ W11/fgdhntrefwwa-002.jpg"
@@ -127,22 +121,22 @@
           "value": "Samsung Sharp Sans, avant garde"
         },
         {
-          "name": "contains-cdn-url",
-          "description": "Images reference correct CDN base URL",
-          "type": "string_match",
-          "value": "cdn19.mailercdn.net/users/assets/379/images/"
-        },
-        {
           "name": "contains-preheader",
           "description": "HTML has preheader span",
           "type": "string_match",
           "value": "class=\"preheader\""
         },
         {
-          "name": "contains-footer-unsubscribe",
-          "description": "Footer has Adobe Campaign unsubscribe link",
+          "name": "contains-view-online",
+          "description": "HTML has the live Adobe Campaign view online / mirror page link",
           "type": "string_match",
-          "value": "smgUnsub"
+          "value": "MirrorPageUrl"
+        },
+        {
+          "name": "contains-footer-unsubscribe",
+          "description": "Footer has the live Adobe Campaign unsubscribe link",
+          "type": "string_match",
+          "value": "smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true"
         },
         {
           "name": "contains-8-social-icons",

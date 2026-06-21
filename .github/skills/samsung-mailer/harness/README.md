@@ -16,9 +16,9 @@ The validator is designed around the current production workflow:
 - the root `Published/` HTML-only copy exists
 - the mailer subfolder exists with its own HTML copy
 - the mailer ZIP exists inside the mailer subfolder
-- `ZZZZZ` is present for the view-online placeholder
-- `YYYYY` is present for the unsubscribe placeholder
-- Adobe Campaign syntax did not leak into output
+- the live MirrorPage block is present for View Online
+- the live Adobe unsubscribe URL is present
+- `ZZZZZ` and `YYYYY` placeholders do not remain in output
 - local image references are flat, sanitized filenames
 - all referenced local images exist beside the folder HTML
 - remote images are limited to known reusable CDN assets
@@ -80,7 +80,7 @@ Build expectation files for at least these cases:
 3. SN or CI French variant
 4. KE/TZ shared-image variant
 5. Mailer with a sliced border frame
-6. Mailer with `ALL_IMAGES/server.html` packaging
+6. Mailer with shared images and flat sanitized filenames across variants
 7. 1200px design-source job
 
 ## What this harness does not do yet
