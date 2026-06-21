@@ -1,0 +1,44 @@
+{
+  "name": "template-sa-mailer",
+  "jobFolder": "..\\..\\..\\2026\\REPLACE_WITH_JOB_FOLDER",
+  "rootHtml": "REPLACE_WITH_MAILER.html",
+  "mailerFolder": "REPLACE_WITH_MAILER",
+  "mailerHtml": "REPLACE_WITH_MAILER.html",
+  "zipName": "REPLACE_WITH_MAILER.zip",
+  "titleContains": "Samsung South Africa",
+  "mustContain": [
+    "ZZZZZ",
+    "href=\"YYYYY\"",
+    "class=\"preheader\"",
+    "background-color:#555",
+    "group_137.png",
+    "group_144.png"
+  ],
+  "mustNotContain": [
+    "MirrorPageUrl",
+    "smgUnsub?id=",
+    "<%=",
+    "@2x"
+  ],
+  "requiredLocalImages": [],
+  "allowed2xImages": [],
+  "allowedRemoteAssetBasenames": [
+    "group_137.png",
+    "group_138.png",
+    "group_139.png",
+    "group_140.png",
+    "group_141.png",
+    "group_142.png",
+    "group_143.png",
+    "group_144.png",
+    "group_2418-402x.png",
+    "group_2438-402x.png",
+    "group_2451-402x_1.png",
+    "group_2574-402x.png",
+    "esrdgthjyukhhg-0001.jpg",
+    "line_22.png",
+    "line_28.png",
+    "rgtfdss-0001.png",
+    "rgtfdss-0002.png"
+  ]
+}
