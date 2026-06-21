@@ -36,6 +36,7 @@ harness/
   fixtures/
     README.md
   scripts/
+    new-expectation-from-mailer.ps1
     run-harness.ps1
     validate-mailer-output.ps1
 ```
@@ -55,6 +56,33 @@ To run every expectation file in a folder:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .github/skills/samsung-mailer/harness/scripts/run-harness.ps1 -ExpectationDirectory .github/skills/samsung-mailer/harness/expected
 ```
+
+## Grow The Harness
+
+Yes, the harness can improve with each completed email, but it should do that through a controlled promotion step rather than silently rewriting its own rules.
+
+Recommended loop for every finished mailer:
+
+1. Generate and package the mailer as normal.
+2. Promote the completed mailer folder into a candidate expectation.
+3. Validate that expectation immediately.
+4. Keep it if it adds useful coverage for a new region, layout, packaging pattern, or edge case.
+
+Use the promotion script like this:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .github/skills/samsung-mailer/harness/scripts/new-expectation-from-mailer.ps1 -MailerFolderPath "2026\Some Job\Published\Some Mailer Folder" -Validate
+```
+
+What it does:
+
+- detects the job folder, `Published/` folder, folder HTML, and ZIP automatically
+- harvests the current title, key required strings, local image references, and remote asset basenames
+- infers whether the completed mailer follows the current strict packaging layout or an older legacy layout
+- writes a candidate `.expected.json` into `harness/expected/`
+- optionally runs the validator immediately when `-Validate` is supplied
+
+That gives you a safe self-improvement loop: each successful real-world mailer can become a new regression fixture, but only after review.
 
 ## Expectation model
 

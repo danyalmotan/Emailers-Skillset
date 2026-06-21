@@ -12,7 +12,9 @@ if (-not (Test-Path -LiteralPath $validatorPath)) {
 }
 
 $resolvedDir = Resolve-Path -LiteralPath $ExpectationDirectory -ErrorAction Stop
-$expectationFiles = Get-ChildItem -LiteralPath $resolvedDir.Path -Filter *.expected.json -File | Sort-Object Name
+$expectationFiles = Get-ChildItem -LiteralPath $resolvedDir.Path -Filter *.expected.json -File |
+    Where-Object { $_.Name -ne 'template.expected.json' } |
+    Sort-Object Name
 
 if (-not $expectationFiles) {
     throw "No *.expected.json files found in $($resolvedDir.Path)"
