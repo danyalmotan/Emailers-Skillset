@@ -5,6 +5,8 @@
   "mailerFolder": "REPLACE_WITH_MAILER",
   "mailerHtml": "REPLACE_WITH_MAILER.html",
   "zipName": "REPLACE_WITH_MAILER.zip",
+  "requireRootHtmlCopy": true,
+  "requireFolderZip": true,
   "titleContains": "Samsung South Africa",
   "mustContain": [
     "MirrorPageUrl",
@@ -20,6 +22,7 @@
   ],
   "requiredLocalImages": [],
   "allowed2xImages": [],
+  "allowedRemoteHosts": [],
   "allowedRemoteAssetBasenames": [
     "group_137.png",
     "group_138.png",

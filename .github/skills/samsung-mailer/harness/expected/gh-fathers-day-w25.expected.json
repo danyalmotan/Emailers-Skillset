@@ -1,0 +1,39 @@
+{
+  "name": "gh-fathers-day-w25",
+  "jobFolder": "..\\..\\..\\..\\..\\2026\\ZAS26113068  2026_SEWA Retainer_MX Father's Day _ Mailer + Banner _ W25",
+  "rootHtml": "GH_ZAS26113068  2026_SEWA Retainer_MX Father's Day _ Mailer + Banner _ W25.html",
+  "mailerFolder": "GH_ZAS26113068  2026_SEWA Retainer_MX Father's Day _ Mailer + Banner _ W25",
+  "mailerHtml": "GH_ZAS26113068  2026_SEWA Retainer_MX Father's Day _ Mailer + Banner _ W25.html",
+  "zipName": "GH_ZAS26113068  2026_SEWA Retainer_MX Father's Day _ Mailer + Banner _ W25.zip",
+  "requireRootHtmlCopy": false,
+  "requireFolderZip": false,
+  "titleContains": "Samsung Ghana",
+  "mustContain": [
+    "MirrorPageUrl",
+    "smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true",
+    "class=\"preheader\"",
+    "background-color:#555555",
+    "Hero.png",
+    "Row_01.png",
+    "Button.png",
+    "group_137.png",
+    "group_139.png"
+  ],
+  "mustNotContain": [
+    "ZZZZZ",
+    "YYYYY"
+  ],
+  "requiredLocalImages": [
+    "Hero.png",
+    "Row_01.png",
+    "Row_02.png",
+    "Row_03.png",
+    "Button.png"
+  ],
+  "allowed2xImages": [],
+  "allowedRemoteAssetBasenames": [
+    "group_137.png",
+    "group_138.png",
+    "group_139.png"
+  ]
+}

@@ -24,6 +24,8 @@ The validator is designed around the current production workflow:
 - remote images are limited to known reusable CDN assets
 - the ZIP contains the folder HTML plus the referenced local images only
 
+By default those packaging checks stay strict. For mined historical fixtures, you can opt out per expectation when an older completed job is still useful as a content or structure reference but does not match the latest packaging workflow.
+
 ## Folder layout
 
 ```text
@@ -65,11 +67,16 @@ Core fields:
 - `mailerFolder`: folder inside `Published/` containing the local-image version
 - `mailerHtml`: HTML file inside that mailer folder
 - `zipName`: ZIP file inside the mailer folder
+- `requireRootHtmlCopy`: optional, defaults to `true`; set to `false` for legacy fixtures without a root `Published/` HTML copy
+- `requireFolderZip`: optional, defaults to `true`; set to `false` for legacy fixtures without a per-mailer ZIP inside the folder
 - `titleContains`: title text to assert
 - `mustContain`: required strings in the folder HTML
 - `mustNotContain`: forbidden strings in the folder HTML
 - `requiredLocalImages`: optional list of local image filenames that must be referenced
 - `allowed2xImages`: optional list of `_2x` filenames explicitly allowed when no 1x exists
+- `allowedRemoteHosts`: optional list of extra remote hosts allowed for that specific fixture, in addition to the default MailerCDN host
+
+Use the legacy switches sparingly. The default expectation for new generated mailers is still the full current packaging layout.
 
 ## Suggested fixture coverage
 

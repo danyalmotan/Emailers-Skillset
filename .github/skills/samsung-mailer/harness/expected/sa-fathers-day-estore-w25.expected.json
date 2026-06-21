@@ -1,0 +1,36 @@
+{
+  "name": "sa-fathers-day-estore-w25",
+  "jobFolder": "..\\..\\..\\..\\..\\2026\\ZAS26088180  2026_SSA Retainer_Digital_CRM Estore_ Father's Day _ Mailer 2 _ W25",
+  "rootHtml": "ZAS26088180_2026_SSA Retainer_Digital_CRM Estore_Father's Day_Mailer 2_W25.html",
+  "mailerFolder": "ZAS26088180_2026_SSA Retainer_Digital_CRM Estore_Father's Day_Mailer 2_W25",
+  "mailerHtml": "ZAS26088180_2026_SSA Retainer_Digital_CRM Estore_Father's Day_Mailer 2_W25.html",
+  "zipName": "ZAS260~1.zip",
+  "requireRootHtmlCopy": false,
+  "requireFolderZip": true,
+  "titleContains": "Samsung South Africa",
+  "mustContain": [
+    "MirrorPageUrl",
+    "smgUnsub?id=<%= escapeUrl(recipient.cryptedId) %>&lang=en&unsub=true",
+    "class=\"preheader\"",
+    "Button_Buy_Gifts.png",
+    "Banner_Gift_Dad.png",
+    "Shop_App_Icon.png"
+  ],
+  "mustNotContain": [
+    "ZZZZZ",
+    "YYYYY"
+  ],
+  "requiredLocalImages": [
+    "Button_Buy_Gifts.png",
+    "Button_Buy_Now.png",
+    "Banner_Gift_Dad.png",
+    "Shop_App_Icon.png"
+  ],
+  "allowed2xImages": [],
+  "allowedRemoteHosts": [
+    "samsungsa.online"
+  ],
+  "allowedRemoteAssetBasenames": [
+    "countdown.php"
+  ]
+}

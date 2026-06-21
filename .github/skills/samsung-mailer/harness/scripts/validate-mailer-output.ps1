@@ -161,6 +161,14 @@ function Test-RemoteImageAllowed {
     }
 }
 
+function Get-AllowedRemoteHosts {
+    param([object[]]$ExtraHosts)
+
+    $defaults = @('cdn19.mailercdn.net')
+    $all = $defaults + ($ExtraHosts | Where-Object { $_ })
+    return $all | Select-Object -Unique
+}
+
 function Test-2xUsage {
     param(
         [string]$Source,
@@ -214,6 +222,8 @@ $rootHtmlName = if ($expectation.rootHtml) { [string]$expectation.rootHtml } els
 $mailerFolderName = if ($expectation.mailerFolder) { [string]$expectation.mailerFolder } else { [System.IO.Path]::GetFileNameWithoutExtension([string]$expectation.mailerHtml) }
 $mailerHtmlName = [string]$expectation.mailerHtml
 $zipName = if ($expectation.zipName) { [string]$expectation.zipName } else { ([System.IO.Path]::GetFileNameWithoutExtension($mailerHtmlName) + '.zip') }
+$requireRootHtmlCopy = if ($null -ne $expectation.requireRootHtmlCopy) { [bool]$expectation.requireRootHtmlCopy } else { $true }
+$requireFolderZip = if ($null -ne $expectation.requireFolderZip) { [bool]$expectation.requireFolderZip } else { $true }
 
 $rootHtmlPath = Join-Path $publishedPath $rootHtmlName
 $mailerFolderPath = Join-Path $publishedPath $mailerFolderName
@@ -222,17 +232,26 @@ $zipPath = Join-Path $mailerFolderPath $zipName
 
 $null = Test-RequiredPath -Path $jobFolder -Label 'job folder' -Directory
 $null = Test-RequiredPath -Path $publishedPath -Label 'Published folder' -Directory
-$null = Test-RequiredPath -Path $rootHtmlPath -Label 'Published root HTML copy'
 $null = Test-RequiredPath -Path $mailerFolderPath -Label 'mailer folder' -Directory
 $null = Test-RequiredPath -Path $mailerHtmlPath -Label 'mailer folder HTML copy'
-$null = Test-RequiredPath -Path $zipPath -Label 'mailer ZIP'
+
+if ($requireRootHtmlCopy) {
+    $null = Test-RequiredPath -Path $rootHtmlPath -Label 'Published root HTML copy'
+}
+
+if ($requireFolderZip) {
+    $null = Test-RequiredPath -Path $zipPath -Label 'mailer ZIP'
+}
 
 if ($script:Failures.Count -eq 0) {
-    $rootHtml = Get-NormalizedText (Get-Content -LiteralPath $rootHtmlPath -Raw -Encoding UTF8)
     $folderHtml = Get-NormalizedText (Get-Content -LiteralPath $mailerHtmlPath -Raw -Encoding UTF8)
 
-    if ($rootHtml -ne $folderHtml) {
-        Add-Failure('Published root HTML copy does not match the mailer-folder HTML copy.')
+    if ($requireRootHtmlCopy) {
+        $rootHtml = Get-NormalizedText (Get-Content -LiteralPath $rootHtmlPath -Raw -Encoding UTF8)
+
+        if ($rootHtml -ne $folderHtml) {
+            Add-Failure('Published root HTML copy does not match the mailer-folder HTML copy.')
+        }
     }
 
     if ($expectation.titleContains -and $folderHtml.IndexOf([string]$expectation.titleContains, [System.StringComparison]::OrdinalIgnoreCase) -lt 0) {
@@ -244,7 +263,7 @@ if ($script:Failures.Count -eq 0) {
 
     $imageSources = Get-UniqueImageSources -Html $folderHtml
     $localImages = New-Object System.Collections.Generic.List[string]
-    $allowedHosts = @('cdn19.mailercdn.net')
+    $allowedHosts = Get-AllowedRemoteHosts -ExtraHosts $expectation.allowedRemoteHosts
     $allowedRemoteBasenames = Get-AllowedRemoteAssetBasenames -ExtraBasenames $expectation.allowedRemoteAssetBasenames
 
     foreach ($src in $imageSources) {
@@ -270,32 +289,34 @@ if ($script:Failures.Count -eq 0) {
         }
     }
 
-    $expectedZipEntries = @($mailerHtmlName) + @($localImages | Select-Object -Unique)
+    if ($requireFolderZip) {
+        $expectedZipEntries = @($mailerHtmlName) + @($localImages | Select-Object -Unique)
 
-    $zip = [System.IO.Compression.ZipFile]::OpenRead($zipPath)
-    try {
-        $zipEntries = @($zip.Entries | Where-Object { -not [string]::IsNullOrWhiteSpace($_.Name) } | ForEach-Object { $_.FullName })
+        $zip = [System.IO.Compression.ZipFile]::OpenRead($zipPath)
+        try {
+            $zipEntries = @($zip.Entries | Where-Object { -not [string]::IsNullOrWhiteSpace($_.Name) } | ForEach-Object { $_.FullName })
 
-        foreach ($entry in $zipEntries) {
-            if ($entry -match '[\\/]') {
-                Add-Failure("ZIP entry is not flat. Expected files only at archive root: $entry")
+            foreach ($entry in $zipEntries) {
+                if ($entry -match '[\\/]') {
+                    Add-Failure("ZIP entry is not flat. Expected files only at archive root: $entry")
+                }
+            }
+
+            foreach ($expectedEntry in $expectedZipEntries) {
+                if ($zipEntries -notcontains $expectedEntry) {
+                    Add-Failure("ZIP is missing expected file: $expectedEntry")
+                }
+            }
+
+            foreach ($zipEntry in $zipEntries) {
+                if ($expectedZipEntries -notcontains $zipEntry) {
+                    Add-Failure("ZIP contains an unexpected extra file: $zipEntry")
+                }
             }
         }
-
-        foreach ($expectedEntry in $expectedZipEntries) {
-            if ($zipEntries -notcontains $expectedEntry) {
-                Add-Failure("ZIP is missing expected file: $expectedEntry")
-            }
+        finally {
+            $zip.Dispose()
         }
-
-        foreach ($zipEntry in $zipEntries) {
-            if ($expectedZipEntries -notcontains $zipEntry) {
-                Add-Failure("ZIP contains an unexpected extra file: $zipEntry")
-            }
-        }
-    }
-    finally {
-        $zip.Dispose()
     }
 }
 
